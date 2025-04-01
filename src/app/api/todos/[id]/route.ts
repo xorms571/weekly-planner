@@ -8,9 +8,9 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = context.params;
 
   if (!ObjectId.isValid(id)) {
     return NextResponse.json(
@@ -28,9 +28,7 @@ export async function DELETE(
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
 
     const db = await connectToDatabase();
-    const todo = await db
-      .collection("todo")
-      .findOne({ _id: new ObjectId(id) });
+    const todo = await db.collection("todo").findOne({ _id: new ObjectId(id) });
 
     if (!todo) {
       return NextResponse.json(
@@ -41,7 +39,10 @@ export async function DELETE(
 
     if (todo.userId !== decoded.userId) {
       return NextResponse.json(
-        { success: false, message: "You are not authorized to delete this todo" },
+        {
+          success: false,
+          message: "You are not authorized to delete this todo",
+        },
         { status: 403 }
       );
     }
@@ -72,9 +73,9 @@ export async function DELETE(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = context.params;
 
   if (!ObjectId.isValid(id)) {
     return NextResponse.json(
@@ -92,9 +93,7 @@ export async function PUT(
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
 
     const db = await connectToDatabase();
-    const todo = await db
-      .collection("todo")
-      .findOne({ _id: new ObjectId(id) });
+    const todo = await db.collection("todo").findOne({ _id: new ObjectId(id) });
 
     if (!todo) {
       return NextResponse.json(
@@ -105,7 +104,10 @@ export async function PUT(
 
     if (todo.userId !== decoded.userId) {
       return NextResponse.json(
-        { success: false, message: "You are not authorized to update this todo" },
+        {
+          success: false,
+          message: "You are not authorized to update this todo",
+        },
         { status: 403 }
       );
     }
