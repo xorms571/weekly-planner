@@ -80,7 +80,7 @@ const PlannerContainer = () => {
               <ul className="scrollbar flex flex-col gap-4 mt-4 overflow-y-auto max-h-[370px] min-h-[370px]">
                 {Object.entries(groupedTodos).length === 0 ? (
                   <div className="w-full h-[370px] flex justify-center items-center">
-                    <p>There's no plan</p>
+                    <p>There&apos;s no plan</p>
                   </div>
                 ) : (
                   Object.entries(groupedTodos).map(([date, todosForDate]) => (

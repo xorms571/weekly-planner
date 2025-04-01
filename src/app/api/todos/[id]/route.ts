@@ -112,7 +112,7 @@ export async function PUT(
 
     const { text, completed } = await req.json();
 
-    const updateFields: any = {};
+    const updateFields: Record<string, string | number> = {};
     if (text !== undefined) updateFields.text = text;
     if (completed !== undefined) updateFields.completed = completed;
 

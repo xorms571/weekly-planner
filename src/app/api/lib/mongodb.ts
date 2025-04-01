@@ -12,7 +12,7 @@ declare global {
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-if (!global._mongoClientPromise) {
+if (!globalThis._mongoClientPromise) {
   client = new MongoClient(uri, {
     serverApi: {
       version: ServerApiVersion.v1,
@@ -21,10 +21,10 @@ if (!global._mongoClientPromise) {
     },
   });
 
-  global._mongoClientPromise = client.connect();
+  globalThis._mongoClientPromise = client.connect();
 }
 
-clientPromise = global._mongoClientPromise;
+clientPromise = globalThis._mongoClientPromise;
 
 export async function connectToDatabase() {
   const client = await clientPromise;

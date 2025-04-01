@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ user: decoded });
   } catch (error) {
     return NextResponse.json(
-      { message: "잘못된 토큰입니다." },
+      { message: `잘못된 토큰입니다. ${error}` },
       { status: 401 }
     );
   }

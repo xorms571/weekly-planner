@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     const cookie = `token=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`;
 

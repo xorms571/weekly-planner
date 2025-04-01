@@ -17,7 +17,7 @@ export async function GET(req: Request) {
     try {
       decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
     } catch (err) {
-      return NextResponse.json({ message: "Invalid or expired token" }, { status: 401 });
+      return NextResponse.json({ message: `Invalid or expired token ${err}` }, { status: 401 });
     }
 
     const db = await connectToDatabase();
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     try {
       decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
     } catch (err) {
-      return NextResponse.json({ message: "Invalid or expired token" }, { status: 401 });
+      return NextResponse.json({ message: `Invalid or expired token ${err}` }, { status: 401 });
     }
 
     const { todo, date } = await req.json();
