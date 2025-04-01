@@ -1,6 +1,6 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 
-const uri = process.env.NEXT_PUBLIC_MONGO_DB_URI;
+const uri = process.env.MONGO_DB_URI;
 if (!uri) {
   throw new Error("MONGODB_URI is not defined in .env.local");
 }
