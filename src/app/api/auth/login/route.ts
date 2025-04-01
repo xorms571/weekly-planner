@@ -1,13 +1,10 @@
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "../../lib/mongodb";
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
-
-if (!JWT_SECRET) {
-  throw new Error("JWT_SECRET is not defined in environment variables.");
-}
+const JWT_SECRET: string = process.env.JWT_SECRET!;
+if (!JWT_SECRET) throw new Error("JWT_SECRET is not defined in environment variables.");
 
 export async function POST(req: Request) {
   try {
@@ -20,13 +17,10 @@ export async function POST(req: Request) {
     }
 
     const db = await connectToDatabase();
-
-    const user = await db
-      .collection("users")
-      .findOne(
-        { email },
-        { projection: { _id: 1, password: 1, nickname: 1, email: 1 } }
-      );
+    const user = await db.collection("users").findOne(
+      { email },
+      { projection: { _id: 1, password: 1, nickname: 1, email: 1 } }
+    );
 
     if (!user) {
       return NextResponse.json(
@@ -43,23 +37,14 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!JWT_SECRET) throw new Error("JWT_SECRET이 설정되지 않았습니다.");
-
     const token = jwt.sign(
       { userId: user._id, email: user.email, nickname: user.nickname },
       JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    const response = NextResponse.json({ message: "로그인 성공!" });
-    response.headers.set(
-      "Set-Cookie",
-      `token=${token}; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=3600; Expires=${new Date(
-        Date.now() + 3600 * 1000
-      ).toUTCString()}`
-    );
+    return NextResponse.json({ token, message: "로그인 성공!" }, { status: 200 });
 
-    return response;
   } catch (error) {
     console.error("로그인 오류:", error);
     return NextResponse.json({ message: "서버 오류 발생" }, { status: 500 });
