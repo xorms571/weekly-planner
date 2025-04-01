@@ -6,13 +6,10 @@ import { getTokenFromCookies } from "@/app/utils/getToken";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
-export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
-  const { id } = context.params;
+export async function DELETE(req: NextRequest) {
+  const id = req.nextUrl.pathname.split("/").pop();
 
-  if (!ObjectId.isValid(id)) {
+  if (!id || !ObjectId.isValid(id)) {
     return NextResponse.json(
       { success: false, message: "Invalid ID format" },
       { status: 400 }
@@ -73,11 +70,10 @@ export async function DELETE(
 
 export async function PUT(
   req: NextRequest,
-  context: { params: { id: string } }
 ) {
-  const { id } = context.params;
+  const id = req.nextUrl.pathname.split("/").pop();
 
-  if (!ObjectId.isValid(id)) {
+  if (!id || !ObjectId.isValid(id)) {
     return NextResponse.json(
       { success: false, message: "Invalid ID format" },
       { status: 400 }
