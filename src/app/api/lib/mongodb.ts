@@ -5,8 +5,11 @@ if (!uri) {
   throw new Error("MONGODB_URI is not defined in .env.local");
 }
 
-const clientPromise: Promise<MongoClient> = globalThis._mongoClientPromise || (async () => {
-  const client = new MongoClient(uri, {
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
+
+if (!global._mongoClientPromise) {
+  client = new MongoClient(uri, {
     serverApi: {
       version: ServerApiVersion.v1,
       strict: true,
@@ -14,9 +17,10 @@ const clientPromise: Promise<MongoClient> = globalThis._mongoClientPromise || (a
     },
   });
 
-  globalThis._mongoClientPromise = client.connect();
-  return globalThis._mongoClientPromise;
-})();
+  global._mongoClientPromise = client.connect();
+}
+
+clientPromise = global._mongoClientPromise;
 
 export async function connectToDatabase() {
   const client = await clientPromise;
