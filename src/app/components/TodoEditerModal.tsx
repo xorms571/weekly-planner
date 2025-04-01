@@ -21,10 +21,13 @@ const TodoEditerModal = ({
   isOpen,
   selectedTodo,
 }: props) => {
+  
   if (!isOpen || !selectedTodo) return null;
+
   useEffect(() => {
-    setInput(selectedTodo?.text);
-  }, [setInput]);
+    if (selectedTodo) setInput(selectedTodo.text);
+  }, [selectedTodo, setInput]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input || input === selectedTodo?.text) {

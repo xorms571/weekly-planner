@@ -5,15 +5,10 @@ if (!uri) {
   throw new Error("MONGODB_URI is not defined in .env.local");
 }
 
-let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
-declare global {
-  var _mongoClientPromise: Promise<MongoClient> | undefined;
-}
-
 if (!globalThis._mongoClientPromise) {
-  client = new MongoClient(uri, {
+  const client = new MongoClient(uri, {
     serverApi: {
       version: ServerApiVersion.v1,
       strict: true,
