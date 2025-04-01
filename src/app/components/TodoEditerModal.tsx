@@ -22,11 +22,9 @@ const TodoEditerModal = ({
   selectedTodo,
 }: props) => {
   
-  if (!isOpen || !selectedTodo) return null;
-
   useEffect(() => {
-    if (selectedTodo) setInput(selectedTodo.text);
-  }, [selectedTodo, setInput]);
+    if (isOpen && selectedTodo) setInput(selectedTodo.text);
+  }, [isOpen, selectedTodo, setInput]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,8 +46,12 @@ const TodoEditerModal = ({
     setInput("");
     onClose();
   };
-  const date = new Date(selectedTodo?.date);
+
+  if (!selectedTodo?.date) return;
+  const date = new Date(selectedTodo.date);
+
   const dayIndex = date.getDay();
+
   return (
     <div className="fixed z-10 text-black min-w-60 inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <form
