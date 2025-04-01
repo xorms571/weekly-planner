@@ -1,14 +1,9 @@
-"use client";
-
-import PlannerContainer from "./components/PlannerContainer";
-
+import SignInAndUp from "./components/SignInAndUp";
 
 export default function Home() {
-
   return (
-    <div>
-      <h1 className="text-5xl sm:text-6xl lg:text-8xl font-extrabold m-auto text-center my-10 px-14">WEEKLY PLANNER</h1>
-      <PlannerContainer/>
+    <div className="flex flex-col justify-center items-center">
+      <SignInAndUp />
     </div>
   );
 }

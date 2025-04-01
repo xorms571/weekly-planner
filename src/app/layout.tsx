@@ -27,6 +27,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <h1 className="text-5xl sm:text-6xl lg:text-8xl font-extrabold m-auto text-center my-10 px-14">
+          WEEKLY PLANNER
+        </h1>
         {children}
       </body>
     </html>
