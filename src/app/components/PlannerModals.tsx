@@ -10,6 +10,7 @@ interface props {
   setIsTodoEditerOpen: Dispatch<SetStateAction<boolean>>;
   setIsDatePickerOpen: (value: SetStateAction<boolean>) => void;
   setTodos: (value: SetStateAction<Todo[]>) => void;
+  todos: Todo[];
 }
 
 const PlannerModals = ({
@@ -19,6 +20,7 @@ const PlannerModals = ({
   setIsDatePickerOpen,
   setIsTodoEditerOpen,
   setTodos,
+  todos,
 }: props) => {
   const [input, setInput] = useState("");
 
@@ -29,7 +31,7 @@ const PlannerModals = ({
         method: "GET",
         credentials: "include",
       });
-  
+
       if (!response.ok) throw new Error("Failed to fetch todos");
       const data = await response.json();
       setTodos(data);
@@ -40,8 +42,8 @@ const PlannerModals = ({
   };
 
   useEffect(() => {
-    fetchTodos();
-  }, [fetchTodos]);
+    if (todos.length === 0) fetchTodos();
+  }, [todos]);
 
   // 해당 todo 추가 함수
   const addTodo = async (

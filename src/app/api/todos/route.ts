@@ -37,7 +37,7 @@ export async function GET(req: Request) {
       .collection("todo")
       .find(query)
       .sort({ createdAt: -1 })
-      .limit(20)
+      .limit(1)
       .toArray();
 
     return NextResponse.json(todos, { status: 200 });
