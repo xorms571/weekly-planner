@@ -10,12 +10,23 @@ import { ObjectId } from "mongodb";
 export async function GET(req: Request) {
   try {
     const token = getTokenFromCookies(req);
-    if (!token)
+    if (!token) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+        userId: string;
+      };
+    } catch (err) {
+      return NextResponse.json(
+        { message: `Invalid token: ${err}` },
+        { status: 401 }
+      );
+    }
+
     const db = await connectToDatabase();
-
     const { searchParams } = new URL(req.url);
     const lastId = searchParams.get("lastId");
 

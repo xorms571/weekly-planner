@@ -5,7 +5,8 @@ import { connectToDatabase } from "../../lib/mongodb";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-if (!JWT_SECRET) throw new Error("JWT_SECRET is not defined in environment variables.");
+if (!JWT_SECRET)
+  throw new Error("JWT_SECRET is not defined in environment variables.");
 
 export async function POST(req: Request) {
   try {
@@ -18,7 +19,6 @@ export async function POST(req: Request) {
     }
 
     const db = await connectToDatabase();
-
     const user = await db
       .collection("users")
       .findOne(
@@ -41,20 +41,20 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!JWT_SECRET) throw new Error("JWT_SECRET이 설정되지 않았습니다.");
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET이 설정되지 않았습니다.");
+    }
 
     const token = jwt.sign(
       { userId: user._id, email: user.email, nickname: user.nickname },
-      JWT_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
     const response = NextResponse.json({ message: "로그인 성공!" });
     response.headers.set(
       "Set-Cookie",
-      `token=${token}; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=3600; Expires=${new Date(
-        Date.now() + 3600 * 1000
-      ).toUTCString()}`
+      `token=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=3600`
     );
 
     return response;
