@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       { status: 400 }
     );
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 8);
   await db
     .collection("users")
     .insertOne({ email, password: hashedPassword, nickname });

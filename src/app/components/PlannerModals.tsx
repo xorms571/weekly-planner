@@ -10,7 +10,6 @@ interface props {
   setIsTodoEditerOpen: Dispatch<SetStateAction<boolean>>;
   setIsDatePickerOpen: (value: SetStateAction<boolean>) => void;
   setTodos: (value: SetStateAction<Todo[]>) => void;
-  todos: Todo[];
 }
 
 const PlannerModals = ({
@@ -20,7 +19,6 @@ const PlannerModals = ({
   setIsDatePickerOpen,
   setIsTodoEditerOpen,
   setTodos,
-  todos,
 }: props) => {
   const [input, setInput] = useState("");
 
@@ -42,8 +40,8 @@ const PlannerModals = ({
   };
 
   useEffect(() => {
-    if (todos.length === 0) fetchTodos();
-  }, [todos]);
+    fetchTodos();
+  }, []);
 
   // 해당 todo 추가 함수
   const addTodo = async (

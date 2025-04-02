@@ -53,7 +53,6 @@ const PlannerContainer = () => {
         setIsDatePickerOpen={setIsDatePickerOpen}
         setIsTodoEditerOpen={setIsTodoEditerOpen}
         setTodos={setTodos}
-        todos={todos}
       />
       <div className="flex justify-between text-xs md:justify-center items-center py-5 px-5 md:px-0 gap-5 md:gap-[30%] bg-white bg-opacity-15">
         <UserInformation />
