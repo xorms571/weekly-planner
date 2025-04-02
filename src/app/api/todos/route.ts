@@ -5,6 +5,8 @@ import { getTokenFromCookies } from "@/app/utils/getToken";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
+import { ObjectId } from "mongodb";
+
 export async function GET(req: Request) {
   try {
     const token = getTokenFromCookies(req);
@@ -17,8 +19,8 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const lastId = searchParams.get("lastId");
 
-    const query: any = { userId: decoded.userId };
-    if (lastId) query._id = { $gt: new Object(lastId) };
+    const query: Record<string, unknown> = { userId: decoded.userId };
+    if (lastId) query._id = { $gt: new ObjectId(lastId) };
 
     const todos = await db
       .collection("todo")
@@ -30,7 +32,11 @@ export async function GET(req: Request) {
     return NextResponse.json(todos, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: `Internal Server Error ${error}` },
+      {
+        message: `Internal Server Error: ${
+          error instanceof Error ? error.message : error
+        }`,
+      },
       { status: 500 }
     );
   }
