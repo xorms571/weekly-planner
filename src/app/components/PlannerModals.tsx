@@ -41,7 +41,7 @@ const PlannerModals = ({
 
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, [fetchTodos]);
 
   // 해당 todo 추가 함수
   const addTodo = async (
