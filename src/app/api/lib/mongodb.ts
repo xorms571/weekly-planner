@@ -3,15 +3,14 @@ import { MongoClient } from "mongodb";
 const uri = process.env.MONGO_DB_URI;
 if (!uri) throw new Error("MONGO_DB_URI is not defined in .env.local");
 
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
+const globalWithMongo = global as unknown as NodeJS.Global;
 
-if (!global._mongoClientPromise) {
-  client = new MongoClient(uri);
-  global._mongoClientPromise = client.connect();
+if (!globalWithMongo._mongoClientPromise) {
+  const client = new MongoClient(uri);
+  globalWithMongo._mongoClientPromise = client.connect();
 }
 
-clientPromise = global._mongoClientPromise;
+const clientPromise = globalWithMongo._mongoClientPromise;
 
 export async function connectToDatabase() {
   return (await clientPromise).db("mydatabase");
