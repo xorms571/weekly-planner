@@ -19,6 +19,7 @@ export async function POST(req: Request) {
     }
 
     const db = await connectToDatabase();
+
     const user = await db
       .collection("users")
       .findOne(
@@ -41,20 +42,21 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!process.env.JWT_SECRET) {
+    if (!process.env.JWT_SECRET)
       throw new Error("JWT_SECRET이 설정되지 않았습니다.");
-    }
 
     const token = jwt.sign(
       { userId: user._id, email: user.email, nickname: user.nickname },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1h", algorithm: "HS384" }
     );
 
     const response = NextResponse.json({ message: "로그인 성공!" });
     response.headers.set(
       "Set-Cookie",
-      `token=${token}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=3600`
+      `token=${token}; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=3600; Expires=${new Date(
+        Date.now() + 3600 * 1000
+      ).toUTCString()}`
     );
 
     return response;

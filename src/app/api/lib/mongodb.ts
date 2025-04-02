@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGO_DB_URI;
 if (!uri) {
@@ -9,18 +9,10 @@ let client: MongoClient | null = null;
 let clientPromise: Promise<MongoClient>;
 
 if (!client) {
-  client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    },
-  });
-
+  client = new MongoClient(uri);
   clientPromise = client.connect();
 }
 
 export async function connectToDatabase() {
-  const client = await clientPromise;
-  return client.db("mydatabase");
+  return (await clientPromise).db("mydatabase");
 }
