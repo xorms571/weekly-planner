@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const isPasswordValid = bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return NextResponse.json(
         { message: "이메일 혹은 비밀번호가 일치하지 않습니다." },
