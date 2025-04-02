@@ -27,7 +27,7 @@ const PlannerModals = ({
     try {
       const response = await fetch("/api/todos", {
         method: "GET",
-        credentials: "include", // 쿠키 포함
+        credentials: "include",
       });
   
       if (!response.ok) throw new Error("Failed to fetch todos");
@@ -38,11 +38,10 @@ const PlannerModals = ({
       setTodos([]);
     }
   };
-  
 
   useEffect(() => {
     fetchTodos();
-  }, []); // 컴포넌트가 마운트될 때만 실행
+  }, []);
 
   // 해당 todo 추가 함수
   const addTodo = async (
@@ -65,9 +64,9 @@ const PlannerModals = ({
       if (!response.ok) throw new Error("Failed to add todo");
 
       const newTodo = await response.json();
-      setTodos((prevTodos) => [...prevTodos, newTodo]); // 새 todo를 기존 목록에 추가
-      setInput(""); // 입력란 초기화
-      fetchTodos(); // todos 목록을 새로 고침
+      setTodos((prevTodos) => [...prevTodos, newTodo]);
+      setInput("");
+      fetchTodos();
     } catch (error) {
       console.error("Error adding todo:", error);
     }
@@ -94,7 +93,7 @@ const PlannerModals = ({
       setTodos((prevTodos) =>
         prevTodos.map((t) => (t._id === id ? updatedTodo : t))
       );
-      fetchTodos(); // todos 목록을 새로 고침
+      fetchTodos();
     } catch (error) {
       console.error("Error editing todo:", error);
     }
