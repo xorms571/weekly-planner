@@ -37,7 +37,7 @@ const TodoListForDate = ({
       if (element) newHeights[date] = element.scrollHeight;
     });
     setHeights(newHeights);
-  }, [todos]);
+  }, [todos, todoListRefs]);
 
   // todo 체크박스 함수
   const toggleComplete = async (todoId: string, completed: boolean) => {
