@@ -63,8 +63,8 @@ export default function SignInAndUp() {
     const data = await res.json();
 
     if (res.ok) {
-      alert("로그인 성공!");
       router.push("/planner");
+      alert("로그인 성공!");
     } else {
       setError(data.message || "로그인 실패. 다시 시도하세요.");
     }
