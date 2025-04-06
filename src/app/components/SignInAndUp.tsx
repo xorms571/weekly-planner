@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Button from "../components/Button";
 
@@ -10,7 +9,6 @@ export default function SignInAndUp() {
   const [nickname, setNickname] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter();
 
   const isValidPassword = (password: string) => {
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
