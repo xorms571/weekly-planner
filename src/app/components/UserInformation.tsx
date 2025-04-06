@@ -12,28 +12,23 @@ const UserInformation = () => {
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const res = await fetch("/api/auth/user", {
-            headers: {},
-            credentials: "include",
-          });
-          const data = await res.json();
+      try {
+        const res = await fetch("/api/auth/user", {
+          credentials: "include",
+        });
+        const data = await res.json();
 
-          if (data.user) {
-            setUser(data.user);
-          } else {
-            setUser(null);
-          }
-        } catch (error) {
-          console.error("Failed to fetch user info:", error);
+        if (data.user) {
+          setUser(data.user);
+        } else {
           setUser(null);
         }
-      } else {
+      } catch (error) {
+        console.error("Failed to fetch user info:", error);
         setUser(null);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchUserInfo();
