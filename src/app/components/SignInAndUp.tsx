@@ -63,7 +63,7 @@ export default function SignInAndUp() {
     const data = await res.json();
 
     if (res.ok) {
-      await router.replace("/planner");
+      await window.location.replace("/planner");
     } else {
       setError(data.message || "로그인 실패. 다시 시도하세요.");
     }
