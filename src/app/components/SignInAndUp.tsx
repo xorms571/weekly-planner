@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Button from "../components/Button";
+import { useRouter } from "next/navigation";
 
 export default function SignInAndUp() {
   const [toggle, setToggle] = useState(false);
@@ -9,6 +10,7 @@ export default function SignInAndUp() {
   const [nickname, setNickname] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const isValidPassword = (password: string) => {
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
@@ -61,7 +63,7 @@ export default function SignInAndUp() {
     const data = await res.json();
 
     if (res.ok) {
-      await window.location.replace("/planner");
+      router.push("/planner");
     } else {
       setError(data.message || "로그인 실패. 다시 시도하세요.");
     }
