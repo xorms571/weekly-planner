@@ -65,6 +65,7 @@ export default function SignInAndUp() {
     if (res.ok) {
       alert("로그인 성공!");
       await router.push("/planner");
+      window.location.href = "/planner";
     } else {
       setError(data.message || "로그인 실패. 다시 시도하세요.");
     }
