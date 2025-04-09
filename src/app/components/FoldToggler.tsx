@@ -23,7 +23,7 @@ const FoldToggler = ({
   return (
     <div
       onClick={() => foldToggler(date)}
-      className={`flex cursor-pointer justify-between transition-all delay-200 items-center w-full px-4 py-4 text-left rounded-lg shadow-lg ${
+      className={`flex cursor-pointer justify-between transition-all delay-200 items-center w-full px-4 py-2 text-left rounded-lg ${
         openedDates.includes(date) && "rounded-b-none outline-none"
       }`}
     >

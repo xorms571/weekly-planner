@@ -1,10 +1,11 @@
 "use client";
 import { useState, useRef } from "react";
-import Button from "./Button";
 import FoldToggler from "./FoldToggler";
 import TodoListForDate from "./TodoListForDate";
 import PlannerModals from "./PlannerModals";
 import UserInformation from "./UserInformation";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 export type Todo = {
   _id: string;
   text: string;
@@ -54,13 +55,11 @@ const PlannerContainer = () => {
         setIsTodoEditerOpen={setIsTodoEditerOpen}
         setTodos={setTodos}
       />
-      <div className="flex justify-between text-xs md:justify-center items-center py-5 px-5 md:px-0 gap-5 md:gap-[30%] bg-white bg-opacity-15">
+      <div className="flex justify-between text-xs md:justify-center items-center py-5 px-10 md:px-0 gap-5 md:gap-[30%] bg-slate-100">
         <UserInformation />
-        <Button
-          className="text-black w-fit h-fit text-base bg-white rounded-lg px-6 py-1"
-          title="Add a Schedule"
-          onClick={() => setIsDatePickerOpen(true)}
-        />
+        <Button onClick={() => setIsDatePickerOpen(true)}>
+          Add a Schedule
+        </Button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 m-auto my-10 w-5/6 lg:w-4/6 gap-5">
         {weeks.map((week) => {
@@ -69,25 +68,21 @@ const PlannerContainer = () => {
           );
           const groupedTodos = groupTodosByDate(filteredTodos);
           return (
-            <div
-              className={`min-w-20 bg-white min-h-20 p-4 rounded-3xl text-gray-600 ${
-                Object.entries(groupedTodos).length === 0 &&
-                "bg-opacity-15 text-white"
-              }`}
-              key={week}
-            >
-              <h2 className="text-xl font-bold">{week}</h2>
-              <ul className="scrollbar flex flex-col gap-4 mt-4 overflow-y-auto max-h-[370px] min-h-[370px]">
+            <Card className="min-w-2 overflow-hidden shadow-lg" key={week}>
+              <h2 className="text-xl font-bold p-3 border-b bg-slate-100">
+                {week}
+              </h2>
+              <ul className="scrollbar flex flex-col gap-4 p-4 overflow-y-auto max-h-[370px] min-h-[370px]">
                 {Object.entries(groupedTodos).length === 0 ? (
-                  <div className="w-full h-[370px] flex justify-center items-center">
+                  <div className="w-full h-[370px] text-slate-400 flex justify-center items-center">
                     <p>There&apos;s no plan</p>
                   </div>
                 ) : (
                   Object.entries(groupedTodos).map(([date, todosForDate]) => (
                     <div
-                      className={`flex flex-col border-2 rounded-xl ${
+                      className={`flex flex-col border rounded-xl ${
                         (openedDates.includes(date) &&
-                          "border-slate-500 border-2",
+                          "border-slate-500 border",
                         todosForDate.every((todo) => todo.completed)
                           ? "bg-slate-200"
                           : "bg-white")
@@ -114,7 +109,7 @@ const PlannerContainer = () => {
                   ))
                 )}
               </ul>
-            </div>
+            </Card>
           );
         })}
       </div>
