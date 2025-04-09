@@ -1,10 +1,20 @@
 "use client";
 import { useState } from "react";
-import Button from "../components/Button";
 import { useRouter } from "next/navigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 export default function SignInAndUp() {
-  const [toggle, setToggle] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
@@ -41,7 +51,6 @@ export default function SignInAndUp() {
     });
     const data = await res.json();
     alert(data.message);
-    if (res.ok) setToggle(false);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -63,62 +72,114 @@ export default function SignInAndUp() {
     const data = await res.json();
 
     if (res.ok) {
-      alert('로그인 성공!')
+      alert("로그인 성공!");
       router.push("/planner");
     } else {
       setError(data.message || "로그인 실패. 다시 시도하세요.");
     }
   };
 
-  const handleToggle = () => {
-    setError("");
-    setEmail("");
-    setNickname("");
-    setPassword("");
-    setConfirmPassword("");
-    setToggle(!toggle);
-  };
-
   return (
     <>
-      <form
-        className="flex h-[308px] w-80 flex-col justify-between items-end gap-5 rounded-lg bg-white p-5"
-        onSubmit={toggle ? handleRegister : handleLogin}
-      >
-        <div className="flex flex-col gap-5 w-full">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          {toggle && (
-            <input
-              type="text"
-              placeholder="Nickname"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              required
-            />
-          )}
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {toggle && (
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          )}
-        </div>
+      <Tabs defaultValue="signIn" className="w-full px-5 md:px-0 md:w-96">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="signIn">Sign In</TabsTrigger>
+          <TabsTrigger value="signUp">Sign Up</TabsTrigger>
+        </TabsList>
+        <TabsContent value="signIn">
+          <form onSubmit={handleLogin}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Login</CardTitle>
+                <CardDescription>
+                  Please enter your email and password to log in.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-end">
+                <Button type="submit">Login</Button>
+              </CardFooter>
+            </Card>
+          </form>
+        </TabsContent>
+        <TabsContent value="signUp">
+          <form onSubmit={handleRegister}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Register</CardTitle>
+                <CardDescription>
+                  Create your account by filling out the information below.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="space-y-1">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="nickname">Nickname</Label>
+                  <Input
+                    type="text"
+                    placeholder="Nickname"
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="confirmpassword">Confirm Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-end">
+                <Button type="submit">Register</Button>
+              </CardFooter>
+            </Card>
+          </form>
+        </TabsContent>
         <div className="w-full flex flex-col items-end">
           <p
             className={`text-red-600 mb-5 h-[48px] text-wrap ${
@@ -127,19 +188,8 @@ export default function SignInAndUp() {
           >
             {error}
           </p>
-          <Button
-            title={toggle ? "Register" : "Login"}
-            className="text-black bg-slate-200 w-fit px-5 rounded-md"
-            type="submit"
-          />
         </div>
-      </form>
-      <Button
-        title={toggle ? "Sign In" : "Sign Up"}
-        onClick={handleToggle}
-        type="button"
-        className="mt-5"
-      />
+      </Tabs>
     </>
   );
 }
